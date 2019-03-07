@@ -1,0 +1,6 @@
+node_modules
+.vscode
+.aws
+local.js
+package-lock.json
+lambda.zip
