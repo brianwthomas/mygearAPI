@@ -6,31 +6,42 @@ const helper = require('../../tools/helpers');
 let ddb = new AWS.DynamoDB.DocumentClient({region: config.database.region});
 
 const PUT_PARAMETERS = {
-  REQUIRED: [
+  REQUIRED: [    
     "name"
   ],
-  OPTIONAL: [
-    "components",
+  OPTIONAL: [    
+    "bikeId",
+    "brand",
     "distanceUsed",
     "lastUsedDate",
-    "timeUsed"    
+    "model",
+    "timeUsed",
+    "type"    
   ]
 }
 
 module.exports = async (req, res) => {
-  console.log("putBike API call made");         
+  console.log("putComponent API call made");         
   helper.validateParameters(req.body, res, PUT_PARAMETERS);
   let params = {
-      TableName: config.database.bikes.tableName,
+      TableName: config.database.components.tableName,
       Item: {
-        bikeId: uuid(),
+        // set automatically
+        componentId: uuid(),
         userId: "11", // TODO
+        createdDate: Math.floor(Date.now() / 1000), // epoch in seconds        
+        
+        // required
         name: req.body.name,
-        createdDate: Math.floor(Date.now() / 1000), // epoch in seconds
-        components: req.body.components,
+        
+        //optional
+        bikeId: req.body.bikeId,
+        brand: req.body.brand,
         distanceUsed: req.body.distanceUsed,
         lastUsedDate: req.body.lastUsedDate,
-        timeUsed: req.body.timeUsed
+        model: req.body.model,
+        timeUsed: req.body.timeUsed,
+        type: req.body.type
       }
     };
     console.log(`params = ${params}`);

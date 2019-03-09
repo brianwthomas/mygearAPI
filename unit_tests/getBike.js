@@ -1,8 +1,8 @@
-module.exports.putBike = {
-    "body": "{\"name\":\"API Bike\", \"timeUsed\":\"11\"}",
+module.exports.getBike = {
+    "body": "{\"test\":\"body\"}",
     "resource": "/ttaa",
-    "path": "/bike",
-    "httpMethod": "PUT",
+    "path": "/bike/1",
+    "httpMethod": "GET",
     "multiValueHeaders": "",
     "queryStringParameters": {
       "foo": "bar"

@@ -1,6 +1,8 @@
 //var getBike = 
 
 module.exports = {
+    ...require('./getBike'),
     ...require('./getBikes'),
-    ...require('./putBike'),
+    ...require('./putBike'),    
+    ...require('./putComponent'),  
 }
