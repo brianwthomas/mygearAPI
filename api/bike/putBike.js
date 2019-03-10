@@ -18,8 +18,10 @@ const PUT_PARAMETERS = {
 }
 
 module.exports = async (req, res) => {
-  console.log("putBike API call made");         
+
+  console.log("putBike API call made");           
   helper.validateParameters(req.body, res, PUT_PARAMETERS);
+
   let params = {
       TableName: config.database.bikes.tableName,
       Item: {
@@ -30,11 +32,17 @@ module.exports = async (req, res) => {
         components: req.body.components,
         distanceUsed: req.body.distanceUsed,
         lastUsedDate: req.body.lastUsedDate,
-        timeUsed: req.body.timeUsed
+        timeUsed: req.body.timeUsed      
       }
     };
-    console.log(`params = ${params}`);
+
+    console.log('params = ' + JSON.stringify(params));
+    
     let response = await ddb.put(params).promise();
-    console.log(`response = ${response.$response}`);
-    return response;
+    console.log('response = ' + response.$response);
+
+    if (response.$response.httpResponse.statusCode === 200)
+        return params.Item;
+    else
+        return res.error(500, "Bike Database Error. Please Try Again.")    
 }

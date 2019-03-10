@@ -23,6 +23,7 @@ const PUT_PARAMETERS = {
 module.exports = async (req, res) => {
   console.log("putComponent API call made");         
   helper.validateParameters(req.body, res, PUT_PARAMETERS);
+
   let params = {
       TableName: config.database.components.tableName,
       Item: {
@@ -44,8 +45,13 @@ module.exports = async (req, res) => {
         type: req.body.type
       }
     };
-    console.log(`params = ${params}`);
+    console.log('params = ' + JSON.stringify(params));
+
     let response = await ddb.put(params).promise();
     console.log(`response = ${response.$response}`);
-    return response;
+    
+    if (response.$response.httpResponse.statusCode === 200)
+        return params.Item;
+    else
+        return res.error(500, "Bike Database Error. Please Try Again.")    
 }
